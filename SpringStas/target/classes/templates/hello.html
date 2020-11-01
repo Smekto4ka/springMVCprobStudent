@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>My app</title>
+</head>
+
+<body>
+
+<p>Hello </p>
+<p> zaprosi:</p>
+<p>1)</p>
+<a href="/student">list id student : /student</a>
+<p>2)</p>
+<p>student by id : /student/getIdStudent/{id}</p>
+<p>3)</p>
+<p>new Student : /student/new</p>
+<p>4)</p>
+<p> set Value : </p>
+<p>
+    New values can be entered after clicking the "add values" button in the student window.</p>
+<p>predmet:</p>
+<div th:each="predmet :${enum}">
+    <a th:text="${predmet}"></a>
+</div>
+
+
+</body>
+
+</html>

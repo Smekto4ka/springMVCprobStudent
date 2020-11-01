@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>My app</title>
+</head>
+
+<body>
+
+<p>set value:</p>
+
+
+<form th:method="POST" th:action="@{/student/setValue/{id}(id = ${student.getIdStudent()})}" th:object="${listRating}">
+    <p th:text="${student.getIdStudent()}"> - id student</p>
+    <p th:text="${student.getFirstName()}"> - First name </p>
+    <p th:text="${student.getLastName()}"> - Last Name </p>
+    <br>
+    <div th:each="predmet : ${arraysPredmet}">
+        <a th:text="${predmet}"></a>
+    </div>
+    <br>
+    <label for="predmet">Predmet : </label>
+    <input id="predmet" th:field="*{namePredmet}" type="text"/>
+    <td th:if="${#fields.hasErrors('namePredmet')}" th:errors="*{namePredmet}">Name Error</td>
+    <br>
+    <div th:each="number : ${mass}">
+
+        <label for="value" th:text="${number}"> </label>
+        <input id="value" min="0" max="5" th:field="*{marks}" type="number"/>
+        <br>
+
+    </div>
+    <br>
+    <input type="submit" value="set Value"/>
+</form>
+
+
+</body>
+
+</html>

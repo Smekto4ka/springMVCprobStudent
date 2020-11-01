@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>My app</title>
+</head>
+
+<body>
+
+<p>Hello!</p>
+<a href="/student">list id student</a>
+
+<p th:text="${student.getIdStudent()}"></p>
+<p th:text="${student.getFirstName()}"></p>
+<p th:text="${student.getLastName()}"></p>
+<p th:text="${student.getYears()}"></p>
+<form th:each="predmet : ${student.getListStringMarksPredmet()}">
+    <p th:text="${predmet}"></p>
+</form>
+<br>
+
+
+
+<form th:action="@{/student/setValue/{id} (id = ${student.getIdStudent()} )}" th:method="GET">
+    <input type="submit" value="set Value"/>
+  <label for="koll" >koll value </label>
+    <input type="number" min="1" id="koll" name="koll" value="1" >
+    <p th:text="${warning}"></p>
+
+</form>
+<p>
+
+<form th:action="@{/student/delete/{idStudent}(idStudent = ${student.getIdStudent()} )}" th:method="delete">
+   <button>Delet</button>
+</form>
+
+<form th:action="@{/student/update/{idStudent}(idStudent = ${student.getIdStudent()})}" th:method="GET">
+    <button>Update</button>
+</form>
+
+</body>
+
+</html>

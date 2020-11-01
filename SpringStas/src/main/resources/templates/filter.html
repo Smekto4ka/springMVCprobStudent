@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>My app</title>
+</head>
+
+<body>
+
+<p>Get a list of students, filtered by the average of student grades.</p>
+<form th:each="predmet : ${enum}">
+    <a th:text="${predmet}"></a>
+</form>
+<form th:action="@{/student/filter/minmax}" th:method="GET" th:object="${filterAverage}">
+    <p>Check the box if you want to get values outside the specified interval. Works when filling min and max.</p>
+    <label th:text="check" for="check1"> </label>
+    <input th:type="checkbox" th:field="*{chek}" id="check1">
+    <p>
+        <label th:text="min" for="min1"></label>
+        <input th:type="text" th:field="*{minimumBorder}" id="min1">
+    <td th:if="${#fields.hasErrors('minimumBorder')}" th:errors="*{minimumBorder}">Name Error</td>
+    <p>
+        <label th:text="max" for="max1"></label>
+        <input th:type="text" th:field="*{maximumBorder}" id="max1">
+    <td th:if="${#fields.hasErrors('maximumBorder')}" th:errors="*{maximumBorder}">Name Error</td>
+    <p>
+        <label for="predmet1" th:text="predmet"></label>
+        <input th:type="text" th:field="*{namePredmet}" id="predmet1">
+    <td th:if="${#fields.hasErrors('namePredmet')}" th:errors="*{namePredmet}">Name Error</td>
+    <p>
+        <input th:type="submit" th:value="filter">
+        <br>
+
+</form>
+<br>
+<a>**********************************************************</a>
+<br>
+<p>Get a list of students, filtered by student age.</p>
+<form th:action="@{/student/filter/years}" th:method="GET" th:object="${filterYears}">
+    <p>Check the box if you want to get values outside the specified interval. Works when filling min and max.</p>
+    <label th:text="check" for="check2"></label>
+    <input th:type="checkbox" th:field="*{chek}" id="check2">
+    <p>
+        <label th:text="min" for="min2"></label>
+        <input th:type="text" th:field="*{minimumBorder}" id="min2">
+    <td th:if="${#fields.hasErrors('minimumBorder')}" th:errors="*{minimumBorder}">Name Error</td>
+    <p>
+        <label th:text="max" for="max2"></label>
+        <input th:type="text" th:field="*{maximumBorder}" id="max2">
+    <td th:if="${#fields.hasErrors('maximumBorder')}" th:errors="*{maximumBorder}">Name Error</td>
+    <p>
+        <input th:type="submit" th:value="filter">
+        <br>
+
+</form>
+
+</body>
+
+</html>
