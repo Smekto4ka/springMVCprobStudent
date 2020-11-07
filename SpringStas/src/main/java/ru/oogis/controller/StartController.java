@@ -20,9 +20,4 @@ public class StartController {
     }
 
 
-    @GetMapping("/hello")
-    @ResponseBody
-    public String prob(){
-        return "Hello world";
-    }
 }

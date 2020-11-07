@@ -1,17 +1,18 @@
 package ru.oogis.model.form;
 
+
 import ru.oogis.model.Predmet;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public class FormParametersForFilter {
+public class FormParametersForFilter implements ParametersForFilter {
     private boolean chek;
-    @Pattern(regexp = "[0-9.]{0,20}")
+    @Pattern(regexp = "[0-9.]{0,20}", message = "принимает числовые значения с точкой")
     private String minimumBorder;
-    @Pattern(regexp = "[0-9.]{0,20}")
+    @Pattern(regexp = "[0-9.]{0,20}", message = "принимает числовые значения с точкой")
     private String maximumBorder;
-    @NotNull(message = "not predmet or null")
+    @NotNull(message = "нет такого предмета")
     private String namePredmet = "predmet"; // defolt
     private Predmet predmet;
 
@@ -19,6 +20,7 @@ public class FormParametersForFilter {
     public FormParametersForFilter() {
     }
 
+    @Override
     public boolean isChek() {
         return chek;
     }
@@ -27,6 +29,7 @@ public class FormParametersForFilter {
         this.chek = chek;
     }
 
+    @Override
     public String getMinimumBorder() {
         return minimumBorder;
     }
@@ -43,6 +46,7 @@ public class FormParametersForFilter {
         this.minimumBorder = valueMinString;
     }
 
+    @Override
     public String getMaximumBorder() {
         return maximumBorder;
     }
@@ -59,6 +63,7 @@ public class FormParametersForFilter {
         System.out.println(maximumBorder);
     }
 
+    @Override
     public Predmet getPredmet() {
         return predmet;
     }
@@ -82,10 +87,12 @@ public class FormParametersForFilter {
         }
     }
 
+    @Override
     public double getValueMin() {
         return Double.parseDouble(minimumBorder);
     }
 
+    @Override
     public double getValueMax() {
         return Double.parseDouble(maximumBorder);
     }

@@ -11,7 +11,7 @@
 <p>set value:</p>
 
 
-<form th:method="POST" th:action="@{/student/setValue/{id}(id = ${student.getIdStudent()})}" th:object="${listRating}">
+<form th:method="POST" th:action="@{/student/setMarks/{id}(id = ${student.getIdStudent()})}" th:object="${listRating}">
     <p th:text="${student.getIdStudent()}"> - id student</p>
     <p th:text="${student.getFirstName()}"> - First name </p>
     <p th:text="${student.getLastName()}"> - Last Name </p>
@@ -24,7 +24,7 @@
     <input id="predmet" th:field="*{namePredmet}" type="text"/>
     <td th:if="${#fields.hasErrors('namePredmet')}" th:errors="*{namePredmet}">Name Error</td>
     <br>
-    <div th:each="number : ${mass}">
+    <div th:each="number : ${numberingOfMarks}">
 
         <label for="value" th:text="${number}"> </label>
         <input id="value" min="0" max="5" th:field="*{marks}" type="number"/>

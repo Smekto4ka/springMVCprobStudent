@@ -1,9 +1,9 @@
 package ru.oogis.service;
 
-import ru.oogis.model.Filter;
+import ru.oogis.model.FilterCriterion;
 import ru.oogis.model.Predmet;
 import ru.oogis.model.Student;
-import ru.oogis.model.form.FormParametersForFilter;
+import ru.oogis.model.form.ParametersForFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +34,7 @@ public interface StudentService {
      */
     void setMarksByIdStudentsAndPredmet(long studentId, Predmet predmet, List<Integer> marksList);
 
-    List<Long> getIdStudentsUsingFilter(FormParametersForFilter formParametersForFilter , Filter filter);
+    List<Long> getIdStudentsUsingFilter(ParametersForFilter parametersForFilter , FilterCriterion filterCriterion);
 
     long getMaxIdStudents();
 

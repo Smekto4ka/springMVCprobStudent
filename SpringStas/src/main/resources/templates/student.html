@@ -22,10 +22,10 @@
 
 
 
-<form th:action="@{/student/setValue/{id} (id = ${student.getIdStudent()} )}" th:method="GET">
+<form th:action="@{/student/setMarks/{id} (id = ${student.getIdStudent()} )}" th:method="GET">
     <input type="submit" value="set Value"/>
-  <label for="koll" >koll value </label>
-    <input type="number" min="1" id="koll" name="koll" value="1" >
+  <label for="numberMarks" >koll value </label>
+    <input type="number" min="1" id="numberMarks" name="numberMarks" value="1" >
     <p th:text="${warning}"></p>
 
 </form>

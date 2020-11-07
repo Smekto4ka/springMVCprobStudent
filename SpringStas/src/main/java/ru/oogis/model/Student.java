@@ -131,7 +131,7 @@ public class Student {
     }
 
     public void update(Student student) {
-        idStudent = student.idStudent;
+
         firstName = student.firstName;
         lastName = student.lastName;
         years = student.years;

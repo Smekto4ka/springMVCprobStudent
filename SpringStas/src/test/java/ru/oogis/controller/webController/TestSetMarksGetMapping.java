@@ -18,26 +18,26 @@ public class TestSetMarksGetMapping {
 
     @Test
     public void setValueGetMaping() throws Exception {
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/setValue/5?koll=5"));
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/setMarks/5?numberMarks=5"));
         resultActions.andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     public void setValueGetMapingWrongIdValue() throws Exception {
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/setValue/22?koll=5"));
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/setMarks/22?numberMarks=5"));
         resultActions.andDo(MockMvcResultHandlers.print());
 
     }
 
     @Test
     public void setValueGetMapingWrongKollValue1() throws Exception {
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/setValue/2?koll=-5"));
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/setMarks/2?numberMarks=-5"));
         resultActions.andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     public void setValueGetMapingWrongKollValue2() throws Exception {
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/setValue/2?koll="));
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/student/setMarks/2?numberMarks="));
         resultActions.andDo(MockMvcResultHandlers.print());
     }
 

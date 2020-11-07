@@ -1,10 +1,10 @@
 package ru.oogis.service;
 
 import org.springframework.stereotype.Service;
-import ru.oogis.model.Filter;
+import ru.oogis.model.FilterCriterion;
 import ru.oogis.model.Predmet;
 import ru.oogis.model.Student;
-import ru.oogis.model.form.FormParametersForFilter;
+import ru.oogis.model.form.ParametersForFilter;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -57,14 +57,20 @@ public class SimpleStudentService implements StudentService {
         student.setMarks(predmet, marksList);
     }
 
+    /**
+     * Возвращает список id студентов, прошедших проверку по критериям.
+     *
+     * @param parametersForFilter объект с значениями ограничений для фильтра
+     * @return
+     */
     @Override
-    public List<Long> getIdStudentsUsingFilter(FormParametersForFilter formParametersForFilter, Filter filter) {
+    public List<Long> getIdStudentsUsingFilter(ParametersForFilter parametersForFilter, FilterCriterion filterCriterion) {
 
-        Predicate<Double> predicate = getPredicateFilter(formParametersForFilter);
+        Predicate<Double> predicate = getPredicateFilter(parametersForFilter);
 
-        switch (filter) {
+        switch (filterCriterion) {
             case AVERAGE_MARKS: {
-                Predmet predmet = formParametersForFilter.getPredmet();
+                Predmet predmet = parametersForFilter.getPredmet();
                 return studentMap.values().stream()
                         .filter(student -> predicate.test(student.getAverageByPredmet(predmet)))
                         .map(student -> student.getIdStudent())
@@ -83,18 +89,18 @@ public class SimpleStudentService implements StudentService {
         }
     }
 
-    private Predicate<Double> getPredicateFilter(FormParametersForFilter formParametersForFilter) {
+    private Predicate<Double> getPredicateFilter(ParametersForFilter parametersForFilter) {
 
         Predicate<Double> predicate = a -> a != null;
-        if (formParametersForFilter.getMinimumBorder() != null && formParametersForFilter.getMaximumBorder() != null) {
-            predicate = predicate.and(a -> a > formParametersForFilter.getValueMin() && a <= formParametersForFilter.getValueMax());
-            if (formParametersForFilter.isChek())
-                predicate = predicate.and(a -> a < formParametersForFilter.getValueMin() || a >= formParametersForFilter.getValueMax());
+        if (parametersForFilter.getMinimumBorder() != null && parametersForFilter.getMaximumBorder() != null) {
+            predicate = predicate.and(a -> a > parametersForFilter.getValueMin() && a <= parametersForFilter.getValueMax());
+            if (parametersForFilter.isChek())
+                predicate = predicate.and(a -> a < parametersForFilter.getValueMin() || a >= parametersForFilter.getValueMax());
         }
-        if (formParametersForFilter.getMinimumBorder() == null && formParametersForFilter.getMaximumBorder() != null)
-            predicate = predicate.and(a -> a < formParametersForFilter.getValueMax());
-        if (formParametersForFilter.getMinimumBorder() != null && formParametersForFilter.getMaximumBorder() == null)
-            predicate = predicate.and(a -> a > formParametersForFilter.getValueMin());
+        if (parametersForFilter.getMinimumBorder() == null && parametersForFilter.getMaximumBorder() != null)
+            predicate = predicate.and(a -> a < parametersForFilter.getValueMax());
+        if (parametersForFilter.getMinimumBorder() != null && parametersForFilter.getMaximumBorder() == null)
+            predicate = predicate.and(a -> a > parametersForFilter.getValueMin());
         return predicate;
     }
 

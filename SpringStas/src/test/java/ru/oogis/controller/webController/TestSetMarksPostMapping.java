@@ -17,7 +17,7 @@ public class TestSetMarksPostMapping {
 
     @Test
     public void setMarks() throws Exception {
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/student/setValue/5")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/student/setMarks/5")
                 .param("namePredmet", "History")
                 .param("marks", "4")
                 .param("marks", "5")
@@ -29,7 +29,7 @@ public class TestSetMarksPostMapping {
 
     @Test
     public void setMarksNotStudent() throws Exception {
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/student/setValue/22")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/student/setMarks/22")
                 .param("namePredmet", "History")
                 .param("marks", "4")
 
@@ -39,7 +39,7 @@ public class TestSetMarksPostMapping {
 
     @Test
     public void setMarksNotPredmet() throws Exception {
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/student/setValue/2")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/student/setMarks/2")
                 .param("namePredmet", "")
                 .param("marks", "4")
 
@@ -51,7 +51,7 @@ public class TestSetMarksPostMapping {
 
     @Test
     public void setMarksWorningMarks() throws Exception {
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/student/setValue/2")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/student/setMarks/2")
                 .param("namePredmet", "History")
                 .param("marks", "22")
 

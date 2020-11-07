@@ -17,7 +17,7 @@ public class FormListMarks {
 
 
     private Predmet predmet;
-    @NotNull(message = "not predmet oder null")
+    @NotNull(message = "такого предмета нет")
     private String namePredmet;
 
     private Integer[] marks;
@@ -38,7 +38,6 @@ public class FormListMarks {
     }
 
     public Predmet getPredmet() {
-
         return predmet;
     }
 

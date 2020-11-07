@@ -3,10 +3,9 @@ package ru.oogis.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.oogis.model.Filter;
+import ru.oogis.model.FilterCriterion;
 import ru.oogis.model.Predmet;
 import ru.oogis.model.Student;
 import ru.oogis.model.form.FormListMarks;
@@ -28,7 +27,7 @@ public class WebController {
     }
 
     /**
-     * Opens a page listing the id of all available students.
+     * Показывает страницу со id всех студентов, которые являются ссылками
      */
     @GetMapping()
     public String getIdStudent(Model model) {
@@ -38,9 +37,8 @@ public class WebController {
     }
 
     /**
-     * Opens a page where information about the student will be displayed.
-     * In the request, you enter the student's id.
-     * If there is no such student, you will be taken to the error window.
+     * Открывает страницу с данными о студенте
+     * Есть возможность изменить его имя , фамилию и возраст, так же можно добавить оценки или удалить студента вовсе.
      *
      * @param idStudent student id
      */
@@ -60,8 +58,8 @@ public class WebController {
     }
 
     /**
-     * Opens a page with fields for creating a new student.
-     * The id will be assigned automatically.
+     * Открывает страницу для созания нового студента .
+     * id будет дано после получения объекта в запросе POST и проверки введенных данных.
      */
     @GetMapping("/new")
     public String formNewStudent(Model model) {
@@ -71,7 +69,8 @@ public class WebController {
     }
 
     /**
-     * Gets the student that it writes to the server. Then it redirects to the page of the created student.
+     * Получает объект студента , который записывается в studentService.
+     * Также производится проверка. Если есть ошибки , то выбрасывает на прошлую страницу (заполнение данных нового пользователя).
      *
      * @param student student object.
      */
@@ -85,47 +84,36 @@ public class WebController {
         model.addAttribute("student", student);
         return "student";
 
-
-
-      /*  if (student.getFirstName() != null && student.getLastName() != null && student.getYears() >= 0) {
-            studentService.postStudent(student);
-            model.addAttribute("student", student);
-            return "student";
-        }
-        model.addAttribute("warning"
-                , "You have not completed all the fields or entered a negative number of years.");
-        return "error";*/
     }
 
     /**
-     * Opens a page with the ability to add new grades to the student.
-     * in the fields you enter the subject and grades.
-     * The number of grades to be entered is selected in the student's window.
-     * All student grade fields are optional.
+     * Открывает страницу с заполнением оценок пользователю под определенном id.
+     * <p>
+     * Если пользователь не найден , то будет IllegalStateException и вы перенесетесь на окно ошибки.
+     * Если вы количество полей будет заданно неверно (пример: "") то NumberFormatException и вас направят на страницу студента.
      *
-     * @param idStudent student id
-     * @param kolString the number of grades you wish to assign to the student.
+     * @param idStudent         student id
+     * @param numberMarksString the number of grades you wish to assign to the student.
      */
 
 
     // как написать try cathe
-    // название koll
-    @GetMapping("/setValue/{id}")
-    public String formSetValue(@PathVariable("id") long idStudent, @RequestParam(value = "koll") String kolString, Model model) {
+    @GetMapping("/setMarks/{id}")
+    public String formSetMarks(@PathVariable("id") long idStudent, @RequestParam(value = "numberMarks") String numberMarksString, Model model) {
         Optional<Student> optionalStudent = studentService.getStudById(idStudent);
         try {
             Student student = optionalStudent.orElseThrow(IllegalStateException::new);
 
             try {
-                int kol = Integer.parseInt(kolString);
-                if (kol > 0) {
+                int numberMarks = Integer.parseInt(numberMarksString);
+                if (numberMarks > 0) {
                     model.addAttribute("listRating", new FormListMarks());
-                    int[] massNumber = new int[kol];
-                    for (int i = 0; i < kol; i++) {
-                        massNumber[i] = i + 1;
+                    int[] numberingOfMarks = new int[numberMarks];
+                    for (int i = 0; i < numberMarks; i++) {
+                        numberingOfMarks[i] = i + 1;
                     }
                     model.addAttribute("student", student);
-                    model.addAttribute("mass", massNumber);
+                    model.addAttribute("numberingOfMarks", numberingOfMarks);
                     model.addAttribute("arraysPredmet", Predmet.values());
 
                     return "setValue";
@@ -136,28 +124,32 @@ public class WebController {
             } catch (NumberFormatException e) {
                 // e.printStackTrace();
                 model.addAttribute("student", student);
-                model.addAttribute("warning", "koll должен быть integer != 0");
+                model.addAttribute("warning", "numberMarks должен быть числом");
                 return "student";
             }
         } catch (IllegalStateException ex) {
             model.addAttribute("warning"
-                    , "not Student");
+                    , "no Student");
             return "error";
         }
 
     }
 
     /**
-     * Gets an object with grades, which will later be transferred to the server for recording.
+     * Получает объект с оценками и предметом для записи в studentService.
+     * <p>
+     * Если по каким либо причинам студента не окажется , то IllegalAccessError при проверке в контроллере
+     * или NullPointerException из самого studentService если не будет найден студент.
+     * Если при заполнении вы введете несоответствующие данные , то вас переместит на страницу заполнения оценок с замечаниями.
      *
      * @param idStudent  student id.
      * @param listRating Object with grades and item name.
      */
 
     // SSSSSooooooSSSSS
-    // NullPointerException  || IllegalAccessError
-    @PostMapping("/setValue/{idStudent}")
-    public String setValue(@PathVariable("idStudent") long idStudent,
+    // NullPointerException  | IllegalAccessError
+    @PostMapping("/setMarks/{idStudent}")
+    public String setMarks(@PathVariable("idStudent") long idStudent,
                            @Valid @ModelAttribute("listRating") FormListMarks listRating
             , BindingResult bindingResult, Model model) {
 
@@ -168,12 +160,14 @@ public class WebController {
             if (bindingResult.hasErrors()) {
 
                 model.addAttribute("listRating", listRating);
-                int[] massNumber = new int[listRating.getLengthArraysMarks()];
+                int[] numberingOfMarks = new int[listRating.getLengthArraysMarks()];
+                if (numberingOfMarks.length == 0)
+                    numberingOfMarks = new int[]{1};
                 for (int i = 0; i < listRating.getLengthArraysMarks(); i++) {
-                    massNumber[i] = i + 1;
+                    numberingOfMarks[i] = i + 1;
                 }
                 model.addAttribute("student", student);
-                model.addAttribute("mass", massNumber);
+                model.addAttribute("numberingOfMarks", numberingOfMarks);
                 model.addAttribute("arraysPredmet", Predmet.values());
                 return "setValue";
             }
@@ -182,12 +176,14 @@ public class WebController {
         } catch (IllegalAccessError | NullPointerException ex) {
             System.out.println(ex);
             model.addAttribute("warning"
-                    , "not Student");
+                    , "no Student");
             return "error";
         }
     }
 
-
+    /**
+     * Открывает страницу возможных фильтровю
+     */
     @GetMapping("/filter")
     public String formFilter(Model model) {
         model.addAttribute("filterAverage", new FormParametersForFilter());
@@ -197,8 +193,9 @@ public class WebController {
     }
 
     /**
-     * A filter that makes a request to the server to receive students whose average score meets the conditions.
-     * Conditions are accepted as an object with filtering boundaries.
+     * Производит фильтрацию по среднему баллу определенного предмета и возвращает страницу со списком id студентов , прошедших критерии.
+     * <p>
+     * Если будут ошибки в введенных данных , то перешлет на страницу , где эти данные были введены.
      *
      * @param formParametersForFilter An object with filtering boundaries.
      */
@@ -212,10 +209,17 @@ public class WebController {
             return "filter";
         }
         System.out.println(formParametersForFilter);
-        model.addAttribute("setIdStudent", studentService.getIdStudentsUsingFilter(formParametersForFilter, Filter.AVERAGE_MARKS));
+        model.addAttribute("setIdStudent", studentService.getIdStudentsUsingFilter(formParametersForFilter, FilterCriterion.AVERAGE_MARKS));
         return "listIdStudent";
     }
 
+    /**
+     * Производит фильтрацию по возрасту предмета и возвращает страницу со списком id студентов , прошедших критерии.
+     * <p>
+     * Если будут ошибки в введенных данных , то перешлет на страницу , где эти данные были введены.
+     *
+     * @return
+     */
     @GetMapping("/filter/years")
     public String filterYears(@Valid @ModelAttribute("filterYears") FormParametersForFilter
                                       formParametersForFilter, BindingResult bindingResult, Model model) {
@@ -226,19 +230,28 @@ public class WebController {
             return "filter";
         }
         System.out.println(formParametersForFilter);
-        model.addAttribute("setIdStudent", studentService.getIdStudentsUsingFilter(formParametersForFilter, Filter.YEARS));
+        model.addAttribute("setIdStudent", studentService.getIdStudentsUsingFilter(formParametersForFilter, FilterCriterion.YEARS));
         return "listIdStudent";
     }
 
+
+    /**
+     * Удаляет студента по id
+     * Вызывается из страницы самого студента
+     * Если удаление не произойдет , то выдаст ошибку
+     */
     @DeleteMapping("/delete/{idStudent}")
     public String deleteStudent(@PathVariable long idStudent, Model model) {
         if (studentService.deletStudentById(idStudent))
             return "redirect:/student";
         model.addAttribute("warning"
-                , "delete failed");
+                , "error while deleting");
         return "error";
     }
 
+    /**
+     * Выдается страница для изменений данных студента.
+     */
     @GetMapping("/update/{idStudent}")
     public String formUpdateStudent(@PathVariable long idStudent, Model model) {
         Optional<Student> optionalStudent = studentService.getStudById(idStudent);
@@ -252,6 +265,10 @@ public class WebController {
         }
     }
 
+    /**
+     * Происходит получение объекта студента с измененными значениями,
+     * которые проверяются и после присваиваются существующему объекту в studentService.
+     */
     @PutMapping("/update")
     public String updateStudent(@Valid @ModelAttribute("student") Student student, BindingResult
             bindingResult, Model model) {

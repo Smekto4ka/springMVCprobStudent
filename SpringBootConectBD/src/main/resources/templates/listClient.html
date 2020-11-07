@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>My app</title>
+</head>
+
+<body>
+
+<a>hello</a>
+<br>
+
+<form th:each="client:${listClient}">
+    <p th:text="${client.id}"></p>
+    <p th:text="${client.years}"></p>
+    <p th:text="${client.name}"></p>
+    <br>
+</form>
+
+</body>
+
+</html>
