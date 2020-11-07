@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>My app</title>
+</head>
+
+<body>
+
+<a>hello</a>
+
+<form th:method="POST" th:action="@{/newClient}" th:object="${client}">
+    <label for="name" th:text="name"></label>
+    <input th:field="*{name}" id="name" th:type="text">
+    <label for="years" th:text="years"></label>
+    <input th:field="*{years}" id="years" th:type="number">
+    <input type="submit" value="new Stud">
+</form>
+
+</body>
+
+</html>
