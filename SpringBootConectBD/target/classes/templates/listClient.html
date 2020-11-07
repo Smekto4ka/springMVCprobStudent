@@ -11,13 +11,17 @@
 <a>hello</a>
 <br>
 
-<form th:each="client:${listClient}">
+<div th:each="client:${listClient}">
     <p th:text="${client.id}"></p>
     <p th:text="${client.years}"></p>
     <p th:text="${client.name}"></p>
-    <br>
-</form>
+   <form th:action="@{/delete/{id}(id = ${client.id})}"  th:method="delete">
+       <input type="submit" value="delete">
+   </form>
 
+    <br>
+
+</div>
 </body>
 
 </html>

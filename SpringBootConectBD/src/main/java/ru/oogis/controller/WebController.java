@@ -3,10 +3,7 @@ package ru.oogis.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.oogis.clientService.ClientService;
 import ru.oogis.entity.Client;
 
@@ -36,6 +33,12 @@ public class WebController {
     @PostMapping("/newClient")
     public String newStudent(@ModelAttribute("client") Client client) {
         clientService.create(client);
+        return "redirect:/list";
+    }
+
+    @DeleteMapping("delete/{id}")
+    public String deleteUser(@PathVariable("id") int id){
+        clientService.delete(id);
         return "redirect:/list";
     }
 }
