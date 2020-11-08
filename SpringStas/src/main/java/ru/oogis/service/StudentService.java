@@ -36,9 +36,7 @@ public interface StudentService {
 
     List<Long> getIdStudentsUsingFilter(ParametersForFilter parametersForFilter , FilterCriterion filterCriterion);
 
-    long getMaxIdStudents();
 
-    long getNewIdStudents();
 
     boolean deletStudentById(long id);
 

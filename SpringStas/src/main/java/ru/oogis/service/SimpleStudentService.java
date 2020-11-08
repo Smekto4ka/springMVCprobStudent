@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class SimpleStudentService implements StudentService {
     private static Map<Long, Student> studentMap = new HashMap<>();
     private static long maxIdStudent;
@@ -46,7 +46,7 @@ public class SimpleStudentService implements StudentService {
 
     @Override
     public void postStudent(Student student) {
-        long id = getNewIdStudents();
+        long id = ++maxIdStudent;
         student.setIdStudent(id);
         studentMap.put(id, student);
     }
@@ -104,15 +104,6 @@ public class SimpleStudentService implements StudentService {
         return predicate;
     }
 
-    @Override
-    public long getMaxIdStudents() {
-        return maxIdStudent;
-    }
-
-    @Override
-    public long getNewIdStudents() {
-        return ++maxIdStudent;
-    }
 
     @Override
     public boolean deletStudentById(long id) {

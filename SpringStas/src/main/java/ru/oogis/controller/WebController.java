@@ -98,7 +98,7 @@ public class WebController {
 
 
     // как написать try cathe
-    @GetMapping("/setMarks/{id}")
+ /*   @GetMapping("/setMarks/{id}")
     public String formSetMarks(@PathVariable("id") long idStudent, @RequestParam(value = "numberMarks") String numberMarksString, Model model) {
         Optional<Student> optionalStudent = studentService.getStudById(idStudent);
         try {
@@ -133,7 +133,7 @@ public class WebController {
             return "error";
         }
 
-    }
+    }*/
 
     /**
      * Получает объект с оценками и предметом для записи в studentService.
@@ -148,7 +148,7 @@ public class WebController {
 
     // SSSSSooooooSSSSS
     // NullPointerException  | IllegalAccessError
-    @PostMapping("/setMarks/{idStudent}")
+  /*  @PostMapping("/setMarks/{idStudent}")
     public String setMarks(@PathVariable("idStudent") long idStudent,
                            @Valid @ModelAttribute("listRating") FormListMarks listRating
             , BindingResult bindingResult, Model model) {
@@ -179,18 +179,18 @@ public class WebController {
                     , "no Student");
             return "error";
         }
-    }
+    }*/
 
     /**
      * Открывает страницу возможных фильтровю
      */
-    @GetMapping("/filter")
+ /*   @GetMapping("/filter")
     public String formFilter(Model model) {
         model.addAttribute("filterAverage", new FormParametersForFilter());
         model.addAttribute("filterYears", new FormParametersForFilter());
         model.addAttribute("enum", Predmet.values());
         return "filter";
-    }
+    }*/
 
     /**
      * Производит фильтрацию по среднему баллу определенного предмета и возвращает страницу со списком id студентов , прошедших критерии.
@@ -199,7 +199,7 @@ public class WebController {
      *
      * @param formParametersForFilter An object with filtering boundaries.
      */
-    @GetMapping("/filter/minmax")
+  /*  @GetMapping("/filter/minmax")
     public String filterAverageMarks(@Valid @ModelAttribute("filterAverage") FormParametersForFilter
                                              formParametersForFilter, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -211,7 +211,7 @@ public class WebController {
         System.out.println(formParametersForFilter);
         model.addAttribute("setIdStudent", studentService.getIdStudentsUsingFilter(formParametersForFilter, FilterCriterion.AVERAGE_MARKS));
         return "listIdStudent";
-    }
+    }*/
 
     /**
      * Производит фильтрацию по возрасту предмета и возвращает страницу со списком id студентов , прошедших критерии.
@@ -220,7 +220,7 @@ public class WebController {
      *
      * @return
      */
-    @GetMapping("/filter/years")
+   /* @GetMapping("/filter/years")
     public String filterYears(@Valid @ModelAttribute("filterYears") FormParametersForFilter
                                       formParametersForFilter, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -232,7 +232,7 @@ public class WebController {
         System.out.println(formParametersForFilter);
         model.addAttribute("setIdStudent", studentService.getIdStudentsUsingFilter(formParametersForFilter, FilterCriterion.YEARS));
         return "listIdStudent";
-    }
+    }*/
 
 
     /**
@@ -282,11 +282,6 @@ public class WebController {
 
     }
 
-    @GetMapping("/prob")
-    public @ResponseBody
-    String prob() {
-        return "Hello world";
-    }
 
 }
 //HttpServletRequest
